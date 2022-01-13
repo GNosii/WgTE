@@ -47,25 +47,22 @@ public class WgTE extends PlaceholderExpansion {
 		boolean townyCheck = Bukkit.getPluginManager().getPlugin("Towny").isEnabled();
 		boolean wgCheck = Bukkit.getPluginManager().getPlugin("WorldGuard").isEnabled();
 		
+		// can we register?
+		boolean can = townyCheck != false && wgCheck != false;
+		
+		// register wg platform
+		if (can)
+			wg = WorldGuard.getInstance().getPlatform();
+		
 		// townyCheck is not false and wgCheck is not false
 		// there it has to be an better way of doing this	
-        return townyCheck != false && wgCheck != false;
+        return can;
     }
 
 	@Override
 	public String onRequest(OfflinePlayer player, String params) {
 		if (!player.isOnline()) return null; // cannot really do this if player is offline.
 		return onRequest(player.getPlayer(), params);
-	}
-	
-	@Override
-	public boolean register() {
-		if (!canRegister()) {
-			return false;
-		}
-		
-		wg = WorldGuard.getInstance().getPlatform();
-		return true;
 	}
 
 	/**
