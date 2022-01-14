@@ -59,9 +59,10 @@ public class WgTE extends PlaceholderExpansion {
 	private String NAME = "WgTE";
 
 	/**
-	 * Current version of the expansion. Obtained from the package.
+	 * Current version of the expansion.
+	 * Tried to get it dynamically but it returned null, so...
 	 */
-	private String VERSION = getClass().getPackage().getImplementationVersion();
+	private String VERSION = "0.0.4-beta";
 
 	/**
 	 * Get the identifier for this expansion. (lowercased).
@@ -86,7 +87,7 @@ public class WgTE extends PlaceholderExpansion {
 	public String getVersion() {
 		return VERSION;
 	}
-
+	
 	/**
 	 * Get an list of the placeholders we register. Shown on /papi info.
 	 */
@@ -136,6 +137,7 @@ public class WgTE extends PlaceholderExpansion {
 	public String onRequest(OfflinePlayer player, String params) {
 		if (!player.isOnline())
 			return null; // cannot really do this if player is offline.
+		
 		return onRequest(player.getPlayer(), params);
 	}
 
