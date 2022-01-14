@@ -9,6 +9,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import com.palmergames.bukkit.towny.Towny;
+import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.utils.CombatUtil;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.LocalPlayer;
@@ -31,7 +32,7 @@ public class WgTE extends PlaceholderExpansion {
 	private WorldGuardPlatform wg;
 	
 	private String NAME = "WgTE";
-	private String VERSION = "1.0.0";
+	private String VERSION = getClass().getPackage().getImplementationVersion();
 	
 	@Override
 	public String getIdentifier() {
@@ -55,6 +56,7 @@ public class WgTE extends PlaceholderExpansion {
 	
 	@Override
     public boolean canRegister() {
+		// check if they're enabled!
 		boolean townyCheck = Bukkit.getPluginManager().getPlugin("Towny").isEnabled();
 		boolean wgCheck = Bukkit.getPluginManager().getPlugin("WorldGuard").isEnabled();
 		
@@ -62,6 +64,7 @@ public class WgTE extends PlaceholderExpansion {
 		boolean can = townyCheck != false && wgCheck != false;
 		
 		// register wg platform
+		// this was originally on an overriden #register method, but it prevented normal registering logic to go through.
 		if (can)
 			wg = WorldGuard.getInstance().getPlatform();
 		
@@ -87,18 +90,15 @@ public class WgTE extends PlaceholderExpansion {
         if (params.equalsIgnoreCase("can_pvp")) {
         	Location loc = player.getLocation();
         	
-            boolean wgPrevented = doesWgPrevent(loc, player);
-        	boolean townyPrevented = doesTownyPrevent(player);
+        	// is this area wilderness?
+        	boolean townyGoverns = doesTownyGovern(loc);
         	
-        	// prevented by wg and/or towny
-        	if (wgPrevented || townyPrevented) {
-        		return "false";
-        	}
-        	
-        	// not prevented
-        	return "true";
+        	if (townyGoverns)
+        		return Boolean.toString(doesTownyPrevent(player));
+        	else
+        		return Boolean.toString(doesWgPrevent(loc, player));
         }
-    
+   
         return null; // unknown placeholder
     }
     
@@ -126,5 +126,15 @@ public class WgTE extends PlaceholderExpansion {
      */
     private boolean doesTownyPrevent(Player player) {
     	return CombatUtil.preventDamageCall(Towny.getPlugin(), player, player, DamageCause.ENTITY_ATTACK);
+    }
+    
+    /**
+     * Does Towny govern protection for this location?
+     * A.K.A "is it NOT wilderness?"
+     * @param loc Location
+     * @return inverted {@link TownyAPI#isWilderness(Location)} check (if it is wilderness, towny shouldn't care about it, right?)
+     */
+    private boolean doesTownyGovern(Location loc) {
+    	return !TownyAPI.getInstance().isWilderness(loc);
     }
 }
