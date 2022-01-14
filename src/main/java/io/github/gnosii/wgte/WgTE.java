@@ -156,15 +156,12 @@ public class WgTE extends PlaceholderExpansion {
 		
 		// %wgte_can_pvp% placeholder
 		case "can_pvp": {
-			Location loc = player.getLocation();
-
-			// is this area wilderness?
-			boolean townyGoverns = doesTownyGovern(loc);
-
-			if (townyGoverns)
-				return Boolean.toString(doesTownyPrevent(player));
-			else
-				return Boolean.toString(doesWgPrevent(loc, player));
+			return Boolean.toString(canPvP(player.getLocation(), player));
+		}
+		
+		// %wgte_can_pvp_formatted% placeholder
+		case "can_pvp_formatted": {
+			return canPvP(player.getLocation(), player) ? "&aPvP" : "&cNo PvP";
 		}
 		
 		}
@@ -208,5 +205,20 @@ public class WgTE extends PlaceholderExpansion {
 	 */
 	private boolean doesTownyGovern(Location loc) {
 		return !TownyAPI.getInstance().isWilderness(loc);
+	}
+	
+	/**
+	 * Can players PvP here?
+	 * @param loc Location
+	 * @param player Player
+	 * @return boolean depending on the result
+	 */
+	private boolean canPvP(Location loc, Player player) {
+		boolean townyGoverns = doesTownyGovern(loc);
+
+		if (townyGoverns)
+			return doesTownyPrevent(player);
+		else
+			return doesWgPrevent(loc, player);
 	}
 }
