@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.gnosii</groupId>
 	<artifactId>wgte</artifactId>
-	<version>0.0.1-beta</version>
+	<version>0.0.2-beta</version>
 	<name>WgTE</name>
 	<description>WorldGuard + Towny expansion for PlaceholderAPI</description>
 
