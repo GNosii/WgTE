@@ -90,21 +90,15 @@ public class WgTE extends PlaceholderExpansion {
             boolean wgPrevented = doesWgPrevent(loc, player);
         	boolean townyPrevented = doesTownyPrevent(player);
         	
-        	switch(Boolean.compare(wgPrevented, townyPrevented)) {
-        	// wg and towny prevented pvp
-        	case 0: {
-        		return "true";
-        	}
-        	// only towny prevented
-        	case 1: {
+        	// prevented by wg and/or towny
+        	if (wgPrevented || townyPrevented) {
         		return "false";
         	}
-        	// only wg prevented
-        	case -1: {
-        		return "false";
-        	}
-        	}
+        	
+        	// not prevented
+        	return "true";
         }
+    
         return null; // unknown placeholder
     }
     
