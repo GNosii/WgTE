@@ -1,5 +1,8 @@
 package io.github.gnosii.wgte;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -25,11 +28,14 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
  */
 public class WgTE extends PlaceholderExpansion {
 	
-	WorldGuardPlatform wg;
+	private WorldGuardPlatform wg;
+	
+	private String NAME = "WgTE";
+	private String VERSION = "1.0.0";
 	
 	@Override
 	public String getIdentifier() {
-		return "wgte";
+		return NAME.toLowerCase();
 	}
 
 	@Override
@@ -39,7 +45,12 @@ public class WgTE extends PlaceholderExpansion {
 
 	@Override
 	public String getVersion() {
-		return "1.0.0";
+		return VERSION;
+	}
+	
+	@Override
+	public List<String> getPlaceholders() {
+		return Arrays.asList("can_pvp");
 	}
 	
 	@Override
