@@ -62,7 +62,7 @@ public class WgTE extends PlaceholderExpansion {
 	 * Current version of the expansion.
 	 * Tried to get it dynamically but it returned null, so...
 	 */
-	private String VERSION = "0.0.4-beta";
+	private String VERSION = "1.0.0";
 
 	/**
 	 * Get the identifier for this expansion. (lowercased).
