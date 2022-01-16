@@ -25,10 +25,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.TownyAPI;
-import com.palmergames.bukkit.towny.utils.CombatUtil;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
@@ -62,7 +59,7 @@ public class WgTE extends PlaceholderExpansion {
 	 * Current version of the expansion.
 	 * Tried to get it dynamically but it returned null, so...
 	 */
-	private String VERSION = "1.0.0";
+	private String VERSION = "1.0.1";
 
 	/**
 	 * Get the identifier for this expansion. (lowercased).
@@ -189,11 +186,11 @@ public class WgTE extends PlaceholderExpansion {
 	/**
 	 * Does Towny prevent damage?
 	 * 
-	 * @param player Player
-	 * @return boolean depending on the CombatUtil test.
+	 * @param loc Location to check at.
+	 * @return boolean depending on the TownyAPI test.
 	 */
-	private boolean doesTownyPrevent(Player player) {
-		return CombatUtil.preventDamageCall(Towny.getPlugin(), player, player, DamageCause.ENTITY_ATTACK);
+	private boolean doesTownyPrevent(Location loc) {
+		return !TownyAPI.getInstance().isPVP(loc);
 	}
 
 	/**
@@ -217,7 +214,7 @@ public class WgTE extends PlaceholderExpansion {
 		boolean townyGoverns = doesTownyGovern(loc);
 
 		if (townyGoverns)
-			return doesTownyPrevent(player);
+			return doesTownyPrevent(loc);
 		else
 			return doesWgPrevent(loc, player);
 	}
