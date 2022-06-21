@@ -90,7 +90,7 @@ public class WgTE extends PlaceholderExpansion {
 	 */
 	@Override
 	public List<String> getPlaceholders() {
-		return Arrays.asList("can_pvp");
+		return Arrays.asList("can_pvp", "can_pvp_formatted");
 	}
 
 	/**
